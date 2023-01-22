@@ -6,10 +6,8 @@ name: Testing backend
 on:
   push:
     branches: [ "master" ]
-    paths: [ "backend" ]
   pull_request:
     branches: [ "master" ]
-    paths: [ "backend" ]
 
 jobs:
   build:
@@ -28,5 +26,6 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+        cache-dependency-path: backend/package-lock.json
     - run: npm install
     - run: npm test
