@@ -2,7 +2,6 @@ import 'mocha';
 
 const chai = require('chai');
 const chaiHttp = require('chai-http');
-const server = require('../src/app');
 import {Types} from '../src/routers/usuarioRouters/postDamage'
 import {CalculatorComponent} from '../src/routers/usuarioRouters/postDamage'
 

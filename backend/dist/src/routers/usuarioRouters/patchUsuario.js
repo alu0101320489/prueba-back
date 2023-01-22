@@ -36,7 +36,8 @@ exports.patchUsuarioRouter.patch('/usuario', async (req, res) => {
             runValidators: true,
         });
         if (!usuario) {
-            return res.status(404).send();
+            return res.status(404).send({ error: 'Wrong user',
+            });
         }
         return res.send(usuario);
     }

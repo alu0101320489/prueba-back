@@ -12,16 +12,12 @@ const usuario_1 = require("../../models/usuario");
 exports.postUsuarioRouter = express.Router();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-/**
- * Funcion que crea un nuevo usuario y lo almacena en la base de datos.
- * Comprueba que los atributos que se van a editar estan permitidos.
- * Crea el objeto para modificar y lo actualiza.
- * Devolviendo estados en consecuencia a los errores.
- */
+//Router para crear un usuario nuevo en la base de datos
 exports.postUsuarioRouter.post('/register', async (req, res) => {
     bcrypt.hash(req.body.contraseña, 10, function (err, hash) {
         req.body.contraseña = hash;
         const usuario = new usuario_1.Usuario(req.body);
+        usuario.equipo = ["", "", "", "", "", ""];
         try {
             usuario.save();
             res.status(201).send(usuario);
@@ -31,6 +27,7 @@ exports.postUsuarioRouter.post('/register', async (req, res) => {
         }
     });
 });
+//Router para logearse en la aplicacion, devuelve el token de autentificacion, nombre,id y equipo
 exports.postUsuarioRouter.post('/login', async (req, res) => {
     bcrypt.hash(req.body.contraseña, 10, async function (err, hash) {
         const filter = { nombre: req.body.nombre.toString() };
@@ -50,7 +47,7 @@ exports.postUsuarioRouter.post('/login', async (req, res) => {
                 });
             }
             else {
-                return res.status(404).send();
+                return res.status(404).json({ msg: "Usuario incorrecto" });
             }
         }
         catch (error) {
@@ -58,9 +55,7 @@ exports.postUsuarioRouter.post('/login', async (req, res) => {
         }
     });
 });
-exports.postUsuarioRouter.post('/test', verifyToken, (req, res) => {
-    res.json('Privado');
-});
+//Funcion para verificar el token de autentificacion
 function verifyToken(req, res, next) {
     if (!req.headers.authorization)
         return res.status(401).json('No autorizado');
@@ -74,3 +69,4 @@ function verifyToken(req, res, next) {
         res.status(401).json('Token vacio');
     }
 }
+exports.verifyToken = verifyToken;

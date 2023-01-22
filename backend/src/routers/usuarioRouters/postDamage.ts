@@ -24,7 +24,6 @@ postDamageRouter.post('/damage', async (req, res) => {
       calculadora.dealDamage = 0;
 
       calculadora.damage();
-      console.log(calculadora.dealDamage);
       return res.status(200).json({damage: calculadora.dealDamage});
     }
     return res.status(404).json({ msg: "Error de pokemon"});
